@@ -1,0 +1,72 @@
+networks:
+  mongo_net:
+    driver: bridge
+
+volumes:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+
+services:
+  mongo1:
+    image: mongo:8.0
+    container_name: mongo1
+    hostname: mongo1
+    restart: unless-stopped
+    networks:
+      - mongo_net
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_ROOT_PASSWORD}"
+    volumes:
+      - mongo1_data:/data/db
+      - ./mongo-keyfile:/etc/mongo/keyfile:ro
+    command: >
+      mongod --replSet rs0
+      --keyFile /etc/mongo/keyfile
+      --bind_ip_all
+      --auth
+
+  mongo2:
+    image: mongo:8.0
+    container_name: mongo2
+    hostname: mongo2
+    restart: unless-stopped
+    networks:
+      - mongo_net
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_ROOT_PASSWORD}"
+    volumes:
+      - mongo2_data:/data/db
+      - ./mongo-keyfile:/etc/mongo/keyfile:ro
+    command: >
+      mongod --replSet rs0
+      --keyFile /etc/mongo/keyfile
+      --bind_ip_all
+      --auth
+
+  mongo3:
+    image: mongo:8.0
+    container_name: mongo3
+    hostname: mongo3
+    restart: unless-stopped
+    networks:
+      - mongo_net
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_ROOT_PASSWORD}"
+    volumes:
+      - mongo3_data:/data/db
+      - ./mongo-keyfile:/etc/mongo/keyfile:ro
+    command: >
+      mongod --replSet rs0
+      --keyFile /etc/mongo/keyfile
+      --bind_ip_all
+      --auth
