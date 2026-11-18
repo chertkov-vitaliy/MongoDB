@@ -1,2 +1,0 @@
-# MongoDB
-For student
