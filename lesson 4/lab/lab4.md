@@ -15,12 +15,13 @@
 ---
 
 ## Запуск контейнера с именем replica set "rs0"
-``` 
-docker run --rm -d -p 27017:27017 -h $(hostname) --name mongo-lab mongo:8.0 --replSet=rs0```
+```javascript 
+docker run --rm -d -p 27017:27017 -h $(hostname) --name mongo-lab mongo:8.0 --replSet=rs0
+```
 ---
 
 ## Инициализация replica set (с небольшой задержкой, чтобы контейнер успел запуститься)
-```
+```javascript
 docker exec mongo-lab mongosh --quiet --eval "rs.initiate();"
 ```
 
